@@ -1,0 +1,9 @@
+{% for line in htmllinks %}
+    {% image ''~line.image %}
+        {{ line.link }}
+    {% endimage %}
+{% endfor %}
+
+{% for line in htmlmetas %}
+    {{ line }}
+{% endfor %}
