@@ -21,7 +21,7 @@ class FaviconCommand extends ContainerAwareCommand
     protected $fileLocation;
 
     /**
-     * {@inheritdoc}
+     * Configure Favicon Symfony command
      */
     protected function configure()
     {
@@ -31,7 +31,10 @@ class FaviconCommand extends ContainerAwareCommand
     }
 
     /**
-     * {@inheritdoc}
+     * Execute Favicon Symfony command
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -66,7 +69,13 @@ class FaviconCommand extends ContainerAwareCommand
         $output->writeln('please, execute asset:install command');
     }
 
-    public function getResponse(QueryData $queryData)
+    /**
+     * Get RealFaviconGenerator response
+     *
+     * @param QueryData $queryData RealFaviconGenerator query
+     * @return mixed RealFaviconGenerator response
+     */
+    protected function getResponse(QueryData $queryData)
     {
         $configResolver = $this->getContainer()->get('ezpublish.config.resolver');
         $baseUrl        = $configResolver->getParameter('baseurl', 'edgar_ez_favicon');
@@ -79,6 +88,12 @@ class FaviconCommand extends ContainerAwareCommand
         return $response;
     }
 
+    /**
+     * Upload favicons archive retrieved from RealFaviconGenerator service
+     *
+     * @param string $content json response
+     * @return bool|string false if response status is on error, favicons archive path otherwise
+     */
     protected function uploadIcons($content)
     {
         $content = json_decode($content);
@@ -105,6 +120,11 @@ class FaviconCommand extends ContainerAwareCommand
         }
     }
 
+    /**
+     * Extract and save favicons images
+     *
+     * @param strubg $packageFile favicons archive path
+     */
     protected function unpackIcons($packageFile)
     {
         $zip = new \ZipArchive();
@@ -115,12 +135,16 @@ class FaviconCommand extends ContainerAwareCommand
         }
     }
 
+    /**
+     * Create favicon twig template based on RealFaviconGenerator html response
+     *
+     * @param string $content
+     */
     protected function createView($content)
     {
         $content = json_decode($content);
 
         $htmlContent = $content->favicon_generation_result->favicon->html_code;
-echo $htmlContent;
 
         $htmlContent = explode( "\n", $htmlContent);
         $htmlResult  = array();

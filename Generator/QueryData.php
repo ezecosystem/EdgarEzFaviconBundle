@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Emmanuel
- * Date: 03/10/2015
- * Time: 15:53
- */
 
 namespace EdgarEz\FaviconBundle\Generator;
-
 
 class QueryData
 {
@@ -25,8 +18,10 @@ class QueryData
     const SCALINGALGORITHMSPLINE          = 'Spline';
 
     /**
-     * @param String $apiKey
-     * @param array $parameters
+     * Initialize Query object used to call realfavicongenerator api
+     *
+     * @param string $apiKey RealFaviconGenerator API key
+     * @param array $parameters additional parameters
      */
     public function __construct($apiKey, Array $parameters = array())
     {
@@ -35,7 +30,9 @@ class QueryData
     }
 
     /**
-     * @param array $parameters
+     * Initialize Query parameters
+     *
+     * @param array $parameters additional parameters
      */
     public function setParameters(Array $parameters)
     {
@@ -53,7 +50,9 @@ class QueryData
     }
 
     /**
-     * @param String $imagePath
+     * Define where to find master picture used to generate favicons
+     *
+     * @param string $imagePath image path
      */
     protected function setMasterPicture($imagePath)
     {
@@ -70,7 +69,9 @@ class QueryData
     }
 
     /**
-     * @param String $iconsPath
+     * Define where favicons images would be created
+     *
+     * @param string $iconsPath favicons mages path
      */
     protected function setFilesLocation($iconsPath)
     {
@@ -81,7 +82,7 @@ class QueryData
     }
 
     /**
-     *
+     * Define which type of favicons would be generated
      */
     protected function setFaviconDesign()
     {
@@ -94,6 +95,12 @@ class QueryData
         );
     }
 
+    /**
+     * Define additional RealFaviconGenerator settings
+     *
+     * @param int $compression compression level
+     * @param string $scalingAlgorithm scale type
+     */
     protected function setSettings($compression = 3, $scalingAlgorithm = self::SCALINGALGORITHMMITCHELL)
     {
         $this->settings = array(
@@ -104,7 +111,9 @@ class QueryData
     }
 
     /**
-     * @return string
+     * Convert Query object to json string
+     *
+     * @return string Query json conversion
      */
     public function __toString()
     {

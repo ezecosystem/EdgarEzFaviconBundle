@@ -9,7 +9,9 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 class Configuration extends SiteAccessConfiguration
 {
     /**
-     * {@inheritdoc}
+     * Initialize bundle configuration
+     *
+     * @return TreeBuilder
      */
     public function getConfigTreeBuilder()
     {

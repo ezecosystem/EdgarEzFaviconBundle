@@ -8,7 +8,6 @@
 
 namespace EdgarEz\FaviconBundle\Generator;
 
-
 use eZ\Publish\Core\MVC\ConfigResolverInterface;
 use Guzzle\Http\Client;
 
@@ -16,11 +15,24 @@ class Generator
 {
     private $configResolver;
 
+    /**
+     * Initialize main Generator object
+     *
+     * @param ConfigResolverInterface $configResolver config service
+     */
     public function __construct(ConfigResolverInterface $configResolver)
     {
         $this->configResolver = $configResolver;
     }
 
+    /**
+     * Call RealFaviconGenerator service and get response
+     *
+     * @param string $apiKey RealFaviconGenerator API Key
+     * @param string $picturePath image base path
+     * @param string $fileLocation favicons images path
+     * @return QueryData response from the RealFaviconGeneration service
+     */
     public function generate($apiKey, $picturePath, $fileLocation)
     {
         $parameters = array(
