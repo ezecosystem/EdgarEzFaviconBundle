@@ -11,7 +11,7 @@ Add EdgarEzFaviconBundle by running this command from the terminal at the root o
 your eZPlatform project:
 
 ```bash
-composer require edgarez/favicon-bundle
+composer require edgarez/faviconbundle
 ```
 
 
