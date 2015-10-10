@@ -9,6 +9,7 @@ class QueryData
     protected $files_location;
     protected $favicon_design;
     protected $settings;
+    protected $versioning;
 
     private $faviconDesign = array(
         'desktop_browser', 'ios', 'windows', 'safari_pinned_tab', 'coast', 'open_graph', 'yandex_browser', 'firefox_app', 'android_chrome'
@@ -43,11 +44,14 @@ class QueryData
         if (isset($parameters['master_picture_path']))
             $this->setMasterPicture($parameters['master_picture_path']);
 
-        if(isset($parameters['files_location_path']))
-            $this->setFilesLocation($parameters['files_location_path']);
+        if (isset($parameters['image_path']))
+            $this->setFilesLocation($parameters['image_path']);
 
-        if(isset($parameters['favicon_design']) && count($parameters['favicon_design']) > 0)
+        if (isset($parameters['favicon_design']) && count($parameters['favicon_design']) > 0)
             $this->setFaviconDesign($parameters['favicon_design']);
+
+        if (isset($parameters['versioning']))
+            $this->setVersioning($parameters['versioning']);
 
         $compression    = (isset($parameters['settings_compression'])) ? $parameters['settings_compression'] : 3;
         $scaleAlgorithm = (isset($parameters['settings_scale_algorithm'])) ? $parameters['settings_scale_algorithm'] : self::SCALINGALGORITHMMITCHELL;
@@ -75,13 +79,13 @@ class QueryData
     /**
      * Define where favicons images would be created
      *
-     * @param string $iconsPath favicons mages path
+     * @param string $imagePath favicons mages path
      */
-    protected function setFilesLocation($iconsPath)
+    protected function setFilesLocation($imagePath)
     {
         $this->files_location = array(
             'type' => 'path',
-            'path' => '/'
+            'path' => $imagePath
         );
     }
 
@@ -115,6 +119,14 @@ class QueryData
     }
 
     /**
+     * @param boolean $versioning
+     */
+    protected function setVersioning($versioning)
+    {
+        $this->versioning = $versioning ? true : false;
+    }
+
+    /**
      * Convert Query object to json string
      *
      * @return string Query json conversion
@@ -128,7 +140,8 @@ class QueryData
                     'master_picture' => $this->master_picture,
                     'files_location' => $this->files_location,
                     'favicon_design' => $this->favicon_design,
-                    'settings'       => $this->settings
+                    'settings'       => $this->settings,
+                    'versioning'     => $this->versioning
                 )
             )
         );

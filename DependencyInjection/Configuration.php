@@ -27,7 +27,8 @@ class Configuration extends SiteAccessConfiguration
             ->scalarNode('favicons_view')->isRequired()->end()
             ->arrayNode('favicon_design')->prototype('scalar')->end()->isRequired()->end()
             ->scalarNode('baseurl')->end()
-            ->scalarNode('uri')->end();
+            ->scalarNode('uri')->end()
+            ->booleanNode('versioning')->end();
 
         return $treeBuilder;
     }

@@ -4,5 +4,6 @@ parameters:
     edgar_ez_favicon.default.package_dest: ~
     edgar_ez_favicon.default.favicons_view: ~
     edgar_ez_favicon.default.favicon_design: []
+    edgar_ez_favicon.default.versioning: false
     edgar_ez_favicon.default.baseurl: http://realfavicongenerator.net
     edgar_ez_favicon.default.uri: /api/favicon

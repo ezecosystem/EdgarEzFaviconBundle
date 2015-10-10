@@ -17,6 +17,7 @@ class FaviconCommand extends ContainerAwareCommand
     protected $packageDest;
     protected $faviconsView;
     protected $faviconDesign;
+    protected $versioning;
 
     protected $picturePath;
     protected $fileLocation;
@@ -45,14 +46,26 @@ class FaviconCommand extends ContainerAwareCommand
         $this->packageDest    = $configResolver->getParameter('package_dest', 'edgar_ez_favicon');
         $this->faviconsView   = $configResolver->getParameter('favicons_view', 'edgar_ez_favicon');
         $this->faviconDesign  = $configResolver->getParameter('favicon_design', 'edgar_ez_favicon');
+        $this->versioning     = $configResolver->getParameter('versioning', 'edgar_ez_favicon');
 
         $kernel              = $this->getContainer()->get('kernel');
         $this->picturePath   = $kernel->locateResource($this->masterPicture);
         $this->fileLocation  = $kernel->locateResource($this->packageDest);
         $this->faviconsView  = $kernel->locateResource($this->faviconsView);
 
+        $packageDest = explode('/', trim($this->packageDest, '@'));
+        $bundleName = str_replace('bundle', '', strtolower($packageDest[0]));
+        unset($packageDest[0]);
+        $imagePath = '/bundles/' . $bundleName . '/' . trim(str_replace('Resources/public', '', implode('/', $packageDest)), '/') . '/';
+
         $generator = $this->getContainer()->get('edgar_ez_favicon.generator');
-        $queryData = $generator->generate($this->apiKey, $this->picturePath, $this->fileLocation, $this->faviconDesign);
+        $queryData = $generator->generate(
+            $this->apiKey,
+            $this->picturePath,
+            $imagePath,
+            $this->faviconDesign,
+            $this->versioning
+        );
         $output->writeln('RealFaviconGenerator query generated');
 
         $response    = $this->getResponse($queryData);
@@ -140,6 +153,7 @@ class FaviconCommand extends ContainerAwareCommand
      */
     protected function createView($content)
     {
+echo $content;
         $content = json_decode($content);
 
         $htmlContent = $content->favicon_generation_result->favicon->html_code;
@@ -171,12 +185,7 @@ class FaviconCommand extends ContainerAwareCommand
             if ($replacement) {
                 $imageInfo = pathinfo($matches[1]);
                 if (isset($imageInfo['extension'])) {
-                    $imageName = $imageInfo['filename'] . '.' . $imageInfo['extension'];
-                    $packageDest = explode('/', trim($this->packageDest, '@'));
-                    $bundleName = str_replace('bundle', '', strtolower($packageDest[0]));
-                    unset($packageDest[0]);
-                    $imagePath = 'bundles/' . $bundleName . '/' . trim(str_replace('Resources/public', '', implode('/', $packageDest)), '/') . '/' . $imageName;
-                    $htmlResult[] = preg_replace($pattern, sprintf($replacement, $imagePath, $line), $line);
+                    $htmlResult[] = preg_replace($pattern, sprintf($replacement, $matches[1], $line), $line);
                 } else {
                     $htmlResult[] = $line;
                 }
@@ -185,6 +194,7 @@ class FaviconCommand extends ContainerAwareCommand
 
         $fp = fopen($this->faviconsView, 'w');
         fwrite($fp, implode("\n", $htmlResult));
+        // fwrite($fp, $htmlContent);
         fclose($fp);
     }
 }

@@ -32,6 +32,7 @@ class EdgarEzFaviconExtension extends Extension
         $processor->mapSetting( 'package_dest', $config );
         $processor->mapSetting( 'favicons_view', $config );
         $processor->mapSetting( 'favicon_design', $config );
+        $processor->mapSetting( 'versioning', $config );
         $processor->mapSetting( 'baseurl', $config );
         $processor->mapSetting( 'uri', $config );
     }
