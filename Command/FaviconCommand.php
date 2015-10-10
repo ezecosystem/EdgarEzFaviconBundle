@@ -57,8 +57,7 @@ class FaviconCommand extends ContainerAwareCommand
         $packageFile = $this->uploadIcons($response->getBody(true));
         $output->writeln('Favicons image uploaded');
 
-        if ($packageFile)
-        {
+        if ($packageFile) {
             $this->unpackIcons($packageFile);
             $output->writeln('Favicons image stored');
 
@@ -100,8 +99,7 @@ class FaviconCommand extends ContainerAwareCommand
 
         if (isset($content->favicon_generation_result->result->status)
             && $content->favicon_generation_result->result->status == self::STATUSSUCCESS
-        )
-        {
+        ) {
             $packageUrl = $content->favicon_generation_result->favicon->package_url;
             $content    = file_get_contents($packageUrl);
 
@@ -110,8 +108,7 @@ class FaviconCommand extends ContainerAwareCommand
             $packageFile = $this->fileLocation . $packageName . '.' . $packageInfo['extension'];
 
             $fp = fopen($packageFile, 'w');
-            if ($fp)
-            {
+            if ($fp) {
                 fwrite($fp, $content);
                 return $packageFile;
             }
@@ -128,8 +125,7 @@ class FaviconCommand extends ContainerAwareCommand
     protected function unpackIcons($packageFile)
     {
         $zip = new \ZipArchive();
-        if ($zip->open($packageFile) === true)
-        {
+        if ($zip->open($packageFile) === true) {
             $zip->extractTo($this->fileLocation);
             $zip->close();
         }
@@ -151,8 +147,7 @@ class FaviconCommand extends ContainerAwareCommand
         foreach($htmlContent as $key => $line)
         {
             preg_match('/< *link[^>]*href *= *["\']?([^"\']*)/i', $line, $matches);
-            if (isset($matches[1]))
-            {
+            if (isset($matches[1])) {
                 $imageInfo = pathinfo($matches[0]);
                 $imageName = $imageInfo['filename'] . '.' . $imageInfo['extension'];
                 $packageDest = explode('/', trim($this->packageDest, '@'));
@@ -164,9 +159,7 @@ class FaviconCommand extends ContainerAwareCommand
                 $replace = '<link href="{{ asset(\'' . $imagePath . '\') }}';
                 $line = preg_replace($pattern, $replace, $htmlContent[$key]);
                 $htmlResult[] = $line;
-            }
-            else
-            {
+            } else {
                 $htmlResult[] = $htmlContent[$key];
             }
         }

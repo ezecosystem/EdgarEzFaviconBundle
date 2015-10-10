@@ -56,8 +56,7 @@ class QueryData
      */
     protected function setMasterPicture($imagePath)
     {
-        if (file_exists($imagePath))
-        {
+        if (file_exists($imagePath)) {
             $this->master_picture = array(
                 'type' => 'inline'
             );
