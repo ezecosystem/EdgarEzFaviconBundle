@@ -48,12 +48,14 @@ edgar_ez_favicon:
             master_picture: @AcmeBundle/Resources/public/images/acme/photo.jpg #required
             package_dest: @AcmeBundle/Resources/public/images/acme/favicons/ #required
             favicons_view: @AcmeBundle/Resources/views/acme/favicons.html.twig #required
+            favicon_design: ["ios", "desktop_browser", "windows"]
 ```
 
 * api_key : visit RealFaviconGenerator website to obtain your own API Key for Non-interactive mode
 * master_picture : define path of image model used to generate favicons
 * package_dest : define were favicon images would be uploaded
 * favicons_view : define which twig template would be used to be completed with all head links favicons
+* favicon_design : list of client type (from 'desktop_browser', 'ios', 'windows', 'safari_pinned_tab', 'coast', 'open_graph', 'yandex_browser', 'firefox_app', 'android_chrome')
 
 ### How to use
 

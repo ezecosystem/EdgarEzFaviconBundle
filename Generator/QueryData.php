@@ -10,6 +10,10 @@ class QueryData
     protected $favicon_design;
     protected $settings;
 
+    private $faviconDesign = array(
+        'desktop_browser', 'ios', 'windows', 'safari_pinned_tab', 'coast', 'open_graph', 'yandex_browser', 'firefox_app', 'android_chrome'
+    );
+
     const SCALINGALGORITHMMITCHELL        = 'Mitchell';
     const SCALINGALGORITHMNEARESTNEIGHBOR = 'NearestNeighbor';
     const SCALINGALGORITHMCUBIC           = 'Cubic';
@@ -42,7 +46,8 @@ class QueryData
         if(isset($parameters['files_location_path']))
             $this->setFilesLocation($parameters['files_location_path']);
 
-        $this->setFaviconDesign();
+        if(isset($parameters['favicon_design']) && count($parameters['favicon_design']) > 0)
+            $this->setFaviconDesign($parameters['favicon_design']);
 
         $compression    = (isset($parameters['settings_compression'])) ? $parameters['settings_compression'] : 3;
         $scaleAlgorithm = (isset($parameters['settings_scale_algorithm'])) ? $parameters['settings_scale_algorithm'] : self::SCALINGALGORITHMMITCHELL;
@@ -82,16 +87,16 @@ class QueryData
 
     /**
      * Define which type of favicons would be generated
+     *
+     * @param array $faviconDesign list of favicon design types (from desktop_browser, ios, windows, safari_pinned_tab, coast, open_graph, yandex_browser, firefox_app, android_chrome)
      */
-    protected function setFaviconDesign()
+    protected function setFaviconDesign(array $faviconDesign)
     {
-        $this->favicon_design = array(
-            'desktop_browser' => array(),
-            'ios'             => array(),
-            'windows'         => array()
-            // 'firefox_app'     => array(),
-            // 'android_chrome'  => array()
-        );
+        $faviconDesign = array_intersect($this->faviconDesign, $faviconDesign);
+
+        foreach ($faviconDesign as $fd) {
+            $this->favicon_design[$fd] = array();
+        }
     }
 
     /**

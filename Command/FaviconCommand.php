@@ -16,6 +16,7 @@ class FaviconCommand extends ContainerAwareCommand
     protected $masterPicture;
     protected $packageDest;
     protected $faviconsView;
+    protected $faviconDesign;
 
     protected $picturePath;
     protected $fileLocation;
@@ -43,14 +44,15 @@ class FaviconCommand extends ContainerAwareCommand
         $this->masterPicture  = $configResolver->getParameter('master_picture', 'edgar_ez_favicon');
         $this->packageDest    = $configResolver->getParameter('package_dest', 'edgar_ez_favicon');
         $this->faviconsView   = $configResolver->getParameter('favicons_view', 'edgar_ez_favicon');
+        $this->faviconDesign  = $configResolver->getParameter('favicon_design', 'edgar_ez_favicon');
 
-        $kernel             = $this->getContainer()->get('kernel');
-        $this->picturePath  = $kernel->locateResource($this->masterPicture);
-        $this->fileLocation = $kernel->locateResource($this->packageDest);
-        $this->faviconsView = $kernel->locateResource($this->faviconsView);
+        $kernel              = $this->getContainer()->get('kernel');
+        $this->picturePath   = $kernel->locateResource($this->masterPicture);
+        $this->fileLocation  = $kernel->locateResource($this->packageDest);
+        $this->faviconsView  = $kernel->locateResource($this->faviconsView);
 
         $generator = $this->getContainer()->get('edgar_ez_favicon.generator');
-        $queryData = $generator->generate($this->apiKey, $this->picturePath, $this->fileLocation);
+        $queryData = $generator->generate($this->apiKey, $this->picturePath, $this->fileLocation, $this->faviconDesign);
         $output->writeln('RealFaviconGenerator query generated');
 
         $response    = $this->getResponse($queryData);
@@ -143,24 +145,41 @@ class FaviconCommand extends ContainerAwareCommand
         $htmlContent = $content->favicon_generation_result->favicon->html_code;
 
         $htmlContent = explode( "\n", $htmlContent);
-        $htmlResult  = array();
-        foreach($htmlContent as $key => $line)
-        {
-            preg_match('/< *link[^>]*href *= *["\']?([^"\']*)/i', $line, $matches);
-            if (isset($matches[1])) {
-                $imageInfo = pathinfo($matches[0]);
-                $imageName = $imageInfo['filename'] . '.' . $imageInfo['extension'];
-                $packageDest = explode('/', trim($this->packageDest, '@'));
-                $bundleName = str_replace('bundle', '', strtolower($packageDest[0]));
-                unset($packageDest[0]);
-                $imagePath = 'bundles/' . $bundleName . '/' . trim(str_replace('Resources/public', '', implode('/', $packageDest)), '/') . '/' . $imageName;
+        $pattern1     = '/href="([^"]*)"/';
+        $pattern2     = '/content="([^"]*)"/';
+        $replacement1 = 'href="{{ asset(\'%s\') }}"';
+        $replacement2 = 'content="{{ asset(\'%s\') }}"';
 
-                $pattern = '/< *link[^>]*href *= *["\']?([^"\']*)/i';
-                $replace = '<link href="{{ asset(\'' . $imagePath . '\') }}';
-                $line = preg_replace($pattern, $replace, $htmlContent[$key]);
-                $htmlResult[] = $line;
+        $htmlResult = array();
+        foreach ($htmlContent as $line) {
+            $replacement = false;
+            $pattern     = false;
+            preg_match($pattern1, $line, $matches);
+            if (isset($matches[1])) {
+                $replacement = $replacement1;
+                $pattern     = $pattern1;
             } else {
-                $htmlResult[] = $htmlContent[$key];
+                preg_match($pattern2, $line, $matches);
+                if (isset($matches[1])) {
+                    $replacement = $replacement2;
+                    $pattern     = $pattern2;
+                } else {
+                    $htmlResult[] = $line;
+                }
+            }
+
+            if ($replacement) {
+                $imageInfo = pathinfo($matches[1]);
+                if (isset($imageInfo['extension'])) {
+                    $imageName = $imageInfo['filename'] . '.' . $imageInfo['extension'];
+                    $packageDest = explode('/', trim($this->packageDest, '@'));
+                    $bundleName = str_replace('bundle', '', strtolower($packageDest[0]));
+                    unset($packageDest[0]);
+                    $imagePath = 'bundles/' . $bundleName . '/' . trim(str_replace('Resources/public', '', implode('/', $packageDest)), '/') . '/' . $imageName;
+                    $htmlResult[] = preg_replace($pattern, sprintf($replacement, $imagePath, $line), $line);
+                } else {
+                    $htmlResult[] = $line;
+                }
             }
         }
 

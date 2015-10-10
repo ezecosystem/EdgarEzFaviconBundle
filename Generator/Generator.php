@@ -9,7 +9,6 @@
 namespace EdgarEz\FaviconBundle\Generator;
 
 use eZ\Publish\Core\MVC\ConfigResolverInterface;
-use Guzzle\Http\Client;
 
 class Generator
 {
@@ -31,13 +30,15 @@ class Generator
      * @param string $apiKey RealFaviconGenerator API Key
      * @param string $picturePath image base path
      * @param string $fileLocation favicons images path
+     * @param array $faviconDesign list of client design
      * @return QueryData response from the RealFaviconGeneration service
      */
-    public function generate($apiKey, $picturePath, $fileLocation)
+    public function generate($apiKey, $picturePath, $fileLocation, array $faviconDesign)
     {
         $parameters = array(
             'master_picture_path' => $picturePath,
-            'files_location_path' => $fileLocation
+            'files_location_path' => $fileLocation,
+            'favicon_design'      => $faviconDesign
         );
         $queryData = new QueryData($apiKey, $parameters);
 

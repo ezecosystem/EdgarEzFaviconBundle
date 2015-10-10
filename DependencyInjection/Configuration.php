@@ -25,6 +25,7 @@ class Configuration extends SiteAccessConfiguration
             ->scalarNode('master_picture')->isRequired()->end()
             ->scalarNode('package_dest')->isRequired()->end()
             ->scalarNode('favicons_view')->isRequired()->end()
+            ->arrayNode('favicon_design')->prototype('scalar')->end()->isRequired()->end()
             ->scalarNode('baseurl')->end()
             ->scalarNode('uri')->end();
 
