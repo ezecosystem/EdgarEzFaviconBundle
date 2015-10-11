@@ -96,10 +96,11 @@ class QueryData
      */
     protected function setFaviconDesign(array $faviconDesign)
     {
-        $faviconDesign = array_intersect($this->faviconDesign, $faviconDesign);
+        $faviconDesignKeys   = array_keys($faviconDesign);
+        $this->faviconDesign = array_intersect($this->faviconDesign, $faviconDesignKeys);
 
-        foreach ($faviconDesign as $fd) {
-            $this->favicon_design[$fd] = array();
+        foreach ($this->faviconDesign as $fd) {
+            $this->favicon_design[$fd] = $faviconDesign[$fd];
         }
     }
 

@@ -39,27 +39,63 @@ public function registerBundles()
 edgar_ez_favicon:
     system:
         acme_group: #for each siteaccess
-            api_key: #required
-            master_picture: @AcmeBundle/Resources/public/images/photo.jpg #required
-            package_dest: @AcmeBundle/Resources/public/images/favicons/ #required
-            favicons_view: @AcmeBundle/Resources/views/favicons.html.twig #required
-            favicon_design: ["ios", "desktop_browser", "windows"] #required
-            versioning: true
-        acme: #or/and especially for acme siteaccess
-            api_key: #required
+            api_key: ... #required
             master_picture: @AcmeBundle/Resources/public/images/acme/photo.jpg #required
             package_dest: @AcmeBundle/Resources/public/images/acme/favicons/ #required
-            favicons_view: @AcmeBundle/Resources/views/acme/favicons.html.twig #required
-            favicon_design: ["ios", "desktop_browser", "windows"] #required    
+            favicons_view: @AcmeBundle/Resources/views/acme/favicons.html.twig #required  
             versioning: true
+            favicon_design:
+                desktop_browser: []
+                ios:
+                    picture_aspect: "background_and_margin"
+                    margin: 0
+                    background_color: "#fff"
+                windows:
+                    picture_aspect: "white_silhouette"
+                    background_color: "#fff"
+                firefox_app:
+                    picture_aspect: "circle"
+                    keep_picture_in_circle: true
+                    circle_inner_margin: 5
+                    background_color: "#fff"
+                    manifest:
+                        app_name: "bar"
+                        app_description: "bar description"
+                android_chrome:
+                    picture_aspect: "shadow"
+                    theme_color: "#fff"
+                    manifest:
+                        name: "bar"
+                        display: "standalone"
+                        orientation: "portrait"
+                safari_pinned_tab:
+                    picture_aspect: "black_and_white"
+                    threshold: 60
+                    theme_color: "#fff"
+                coast:
+                    picture_aspect: "background_and_margin"
+                    background_color: "#fff"
+                    margin: 4
+                open_graph:
+                    picture_aspect: "background_and_margin"
+                    background_color: "#fff"
+                    margin: 4
+                    ratio: "1.91:1"
+                yandex_browser:
+                    background_color: "#fff"
+                    manifest:
+                        show_title: true
+                        version: "1.0"
+        acme: #or/and especially for acme siteaccess
+            # ... same as before
 ```
 
 * api_key : visit RealFaviconGenerator website to obtain your own API Key for Non-interactive mode
 * master_picture : define path of image model used to generate favicons
 * package_dest : define were favicon images would be uploaded
 * favicons_view : define which twig template would be used to be completed with all head links favicons
-* favicon_design : list of client type (from 'desktop_browser', 'ios', 'windows', 'safari_pinned_tab', 'coast', 'open_graph', 'yandex_browser', 'firefox_app', 'android_chrome')
 * versioning : define if GET parameter would be adder after favicons path
+* favicon_design : all parameters are not implemented, see documentation (http://realfavicongenerator.net/api/non_interactive_api#.VhrCqnrtlBc)
 
 ### How to use
 
@@ -73,5 +109,3 @@ php ezpublish/console edgar_ez:favicon --siteaccess=demo
 // install favicons uploaded in your AcmeBundle
 php ezpublish/console asset:install
 ```
-
-### This bundle is still in beta version!

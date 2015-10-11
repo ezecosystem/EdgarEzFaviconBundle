@@ -34,7 +34,7 @@ class Generator
      * @param boolean $versioning define if favicon urls have suffix parameter to add GET version parameter
      * @return QueryData response from the RealFaviconGeneration service
      */
-    public function generate($apiKey, $picturePath, $imagePath, array $faviconDesign, $versioning)
+    public function generate($apiKey, $picturePath, $imagePath, $faviconDesign, $versioning)
     {
         $parameters = array(
             'master_picture_path' => $picturePath,

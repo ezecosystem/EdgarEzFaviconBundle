@@ -153,7 +153,6 @@ class FaviconCommand extends ContainerAwareCommand
      */
     protected function createView($content)
     {
-echo $content;
         $content = json_decode($content);
 
         $htmlContent = $content->favicon_generation_result->favicon->html_code;
