@@ -3,24 +3,41 @@
 namespace EdgarEz\FaviconBundle\Command;
 
 use EdgarEz\FaviconBundle\Generator\QueryData;
+use EdgarEz\FaviconBundle\Generator\Generator;
 use Guzzle\Http\Client;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Class FaviconCommand
+ * @package EdgarEz\FaviconBundle\Command
+ */
 class FaviconCommand extends ContainerAwareCommand
 {
+    /**
+     * success service constant
+     */
     const STATUSSUCCESS = 'success';
 
-    protected $apiKey;
-    protected $masterPicture;
-    protected $packageDest;
-    protected $faviconsView;
-    protected $faviconDesign;
-    protected $versioning;
+    /**
+     * @var EdgarEz\FaviconBundle\Generator\Generator
+     */
+    protected $generator;
 
+    /**
+     * @var string picture path
+     */
     protected $picturePath;
+
+    /**
+     * @var string archive file location
+     */
     protected $fileLocation;
+    /**
+     * @var string image path
+     */
+    protected $imagePath;
 
     /**
      * Configure Favicon Symfony command
@@ -41,31 +58,20 @@ class FaviconCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $configResolver       = $this->getContainer()->get('ezpublish.config.resolver');
-        $this->apiKey         = $configResolver->getParameter('api_key', 'edgar_ez_favicon');
-        $this->masterPicture  = $configResolver->getParameter('master_picture', 'edgar_ez_favicon');
-        $this->packageDest    = $configResolver->getParameter('package_dest', 'edgar_ez_favicon');
-        $this->faviconsView   = $configResolver->getParameter('favicons_view', 'edgar_ez_favicon');
-        $this->faviconDesign  = $configResolver->getParameter('favicon_design', 'edgar_ez_favicon');
-        $this->versioning     = $configResolver->getParameter('versioning', 'edgar_ez_favicon');
+        $this->generator = $this->getContainer()->get('edgar_ez_favicon.generator');
 
         $kernel              = $this->getContainer()->get('kernel');
-        $this->picturePath   = $kernel->locateResource($this->masterPicture);
-        $this->fileLocation  = $kernel->locateResource($this->packageDest);
-        $this->faviconsView  = $kernel->locateResource($this->faviconsView);
+        $this->picturePath   = $kernel->locateResource($this->generator->getMasterPicture());
+        $this->fileLocation  = $kernel->locateResource($this->generator->getPackageDest());
 
-        $packageDest = explode('/', trim($this->packageDest, '@'));
-        $bundleName = str_replace('bundle', '', strtolower($packageDest[0]));
+        $packageDest = explode('/', trim($this->generator->getPackageDest(), '@'));
+        $bundleName  = str_replace('bundle', '', strtolower($packageDest[0]));
         unset($packageDest[0]);
-        $imagePath = '/bundles/' . $bundleName . '/' . trim(str_replace('Resources/public', '', implode('/', $packageDest)), '/') . '/';
+        $this->imagePath = '/bundles/' . $bundleName . '/' . trim(str_replace('Resources/public', '', implode('/', $packageDest)), '/') . '/';
 
-        $generator = $this->getContainer()->get('edgar_ez_favicon.generator');
-        $queryData = $generator->generate(
-            $this->apiKey,
+        $queryData = $this->generator->generate(
             $this->picturePath,
-            $imagePath,
-            $this->faviconDesign,
-            $this->versioning
+            $this->imagePath
         );
         $output->writeln('RealFaviconGenerator query generated');
 
@@ -92,12 +98,8 @@ class FaviconCommand extends ContainerAwareCommand
      */
     protected function getResponse(QueryData $queryData)
     {
-        $configResolver = $this->getContainer()->get('ezpublish.config.resolver');
-        $baseUrl        = $configResolver->getParameter('baseurl', 'edgar_ez_favicon');
-        $uri            = $configResolver->getParameter('uri', 'edgar_ez_favicon');
-
-        $client   = new Client($baseUrl);
-        $request  = $client->post($uri, null, $queryData->__toString());
+        $client   = new Client($this->generator->getBaseurl());
+        $request  = $client->post($this->generator->getUri(), null, $queryData->__toString());
         $response = $client->send($request);
 
         return $response;
@@ -158,7 +160,7 @@ class FaviconCommand extends ContainerAwareCommand
 
         $htmlContent = $content->favicon_generation_result->favicon->html_code;
 
-        $htmlContent = explode( "\n", $htmlContent);
+        $htmlContent = explode("\n", $htmlContent);
         $pattern1     = '/href="([^"]*)"/';
         $pattern2     = '/content="([^"]*)"/';
         $replacement1 = 'href="{{ asset(\'%s\') }}"';
@@ -192,9 +194,10 @@ class FaviconCommand extends ContainerAwareCommand
             }
         }
 
-        $fp = fopen($this->faviconsView, 'w');
+        $kernel = $this->getContainer()->get('kernel');
+
+        $fp = fopen($kernel->locateResource($this->generator->getFaviconsView()), 'w');
         fwrite($fp, implode("\n", $htmlResult));
-        // fwrite($fp, $htmlContent);
         fclose($fp);
     }
 }

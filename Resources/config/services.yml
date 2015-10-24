@@ -4,7 +4,15 @@ parameters:
 services:
     edgar_ez_favicon.generator:
         class: %edgar_ez_favicon.generator%
-        arguments:
-            - @ezpublish.config.resolver
+        calls:
+            - [setApiKey, [$api_key;edgar_ez_favicon$]]
+            - [setMasterPicture, [$master_picture;edgar_ez_favicon$]]
+            - [setPackageDest, [$package_dest;edgar_ez_favicon$]]
+            - [setFaviconsView, [$favicons_view;edgar_ez_favicon$]]
+            - [setFaviconDesign, [$favicon_design;edgar_ez_favicon$]]
+            - [setVersioning, [$versioning;edgar_ez_favicon$]]
+            - [setBaseurl, [$baseurl;edgar_ez_favicon$]]
+            - [setUri, [$uri;edgar_ez_favicon$]]
+
 
 

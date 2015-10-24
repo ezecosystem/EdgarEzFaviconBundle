@@ -2,15 +2,45 @@
 
 namespace EdgarEz\FaviconBundle\Generator;
 
+/**
+ * Class QueryData
+ * @package EdgarEz\FaviconBundle\Generator
+ */
 class QueryData
 {
+    /**
+     * @var string api key
+     */
     protected $api_key;
+
+    /**
+     * @var array master picture
+     */
     protected $master_picture;
+
+    /**
+     * @var array files location
+     */
     protected $files_location;
+
+    /**
+     * @var array favicon design
+     */
     protected $favicon_design;
+
+    /**
+     * @var array settings
+     */
     protected $settings;
+
+    /**
+     * @var boolean versioning
+     */
     protected $versioning;
 
+    /**
+     * @var array faviconDesign authorized
+     */
     private $faviconDesign = array(
         'desktop_browser', 'ios', 'windows', 'safari_pinned_tab', 'coast', 'open_graph', 'yandex_browser', 'firefox_app', 'android_chrome'
     );
