@@ -1,5 +1,11 @@
 # EdgarEzFaviconBundle
 
+[![Latest Stable Version](https://poser.pugx.org/edgarez/faviconbundle/v/stable)](https://packagist.org/packages/edgarez/faviconbundle) 
+[![Total Downloads](https://poser.pugx.org/edgarez/faviconbundle/downloads)](https://packagist.org/packages/edgarez/faviconbundle)
+[![Daily Downloads](https://poser.pugx.org/edgarez/faviconbundle/d/daily)](https://packagist.org/packages/edgarez/faviconbundle)
+[![Latest Unstable Version](https://poser.pugx.org/edgarez/faviconbundle/v/unstable)](https://packagist.org/packages/edgarez/faviconbundle) 
+[![License](https://poser.pugx.org/edgarez/faviconbundle/license)](https://packagist.org/packages/edgarez/faviconbundle)
+
 > Integrate generation of a multiplatform favicon with [RealFaviconGenerator](http://realfavicongenerator.net/) into your eZPlatform application.
 > Inspired by RealFaviconGeneratorBundle by joaoalves89 (https://github.com/joaoalves89/RealFaviconGeneratorBundle/tree/master)
 
