@@ -36,4 +36,3 @@ class EdgarEzFaviconExtension extends Extension
         $processor->mapSetting('uri', $config);
     }
 }
-

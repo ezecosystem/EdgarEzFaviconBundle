@@ -200,4 +200,3 @@ class FaviconCommand extends ContainerAwareCommand
         fclose($fp);
     }
 }
-
