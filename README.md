@@ -2,9 +2,8 @@
 
 [![Latest Stable Version](https://poser.pugx.org/edgarez/faviconbundle/v/stable)](https://packagist.org/packages/edgarez/faviconbundle) 
 [![Total Downloads](https://poser.pugx.org/edgarez/faviconbundle/downloads)](https://packagist.org/packages/edgarez/faviconbundle)
-[![Daily Downloads](https://poser.pugx.org/edgarez/faviconbundle/d/daily)](https://packagist.org/packages/edgarez/faviconbundle)
-[![Latest Unstable Version](https://poser.pugx.org/edgarez/faviconbundle/v/unstable)](https://packagist.org/packages/edgarez/faviconbundle) 
 [![License](https://poser.pugx.org/edgarez/faviconbundle/license)](https://packagist.org/packages/edgarez/faviconbundle)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/73dd09e0-2791-4d46-be6f-6fade890dcc0/mini.png)](https://insight.sensiolabs.com/projects/73dd09e0-2791-4d46-be6f-6fade890dcc0)
 
 > Integrate generation of a multiplatform favicon with [RealFaviconGenerator](http://realfavicongenerator.net/) into your eZPlatform application.
 > Inspired by RealFaviconGeneratorBundle by joaoalves89 (https://github.com/joaoalves89/RealFaviconGeneratorBundle/tree/master)

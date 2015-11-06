@@ -3,7 +3,6 @@
 namespace EdgarEz\FaviconBundle\Command;
 
 use EdgarEz\FaviconBundle\Generator\QueryData;
-use EdgarEz\FaviconBundle\Generator\Generator;
 use Guzzle\Http\Client;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -201,3 +200,4 @@ class FaviconCommand extends ContainerAwareCommand
         fclose($fp);
     }
 }
+

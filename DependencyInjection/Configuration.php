@@ -112,3 +112,4 @@ class Configuration extends SiteAccessConfiguration
         return $treeBuilder;
     }
 }
+

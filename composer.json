@@ -11,8 +11,6 @@
   "minimum-stability": "dev",
   "require": {
     "php": ">=5.3.3",
-    "ezsystems/ezpublish-kernel": "~6.0@dev",
-    "ezsystems/platform-ui-assets-bundle": "~1.0@dev",
     "guzzle/guzzle": "~3.9@dev"
   },
   "autoload": {

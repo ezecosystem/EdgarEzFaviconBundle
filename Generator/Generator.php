@@ -228,3 +228,4 @@ class Generator
         return $queryData;
     }
 }
+
