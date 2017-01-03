@@ -1,5 +1,6 @@
 {
   "name": "edgarez/faviconbundle",
+  "type": "ezplatform-bundle",
   "description": "Favicon generator Bundle for eZPlatform",
   "license": "GPL-2.0",
   "authors": [
